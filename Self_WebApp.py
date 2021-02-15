@@ -5,6 +5,7 @@ import logging
 
 # Import from modules
 from MyFunctions import initialise_app, handle_exception
+from selfwebapp import app
 
 # Initialise project
 CURR_DIR, CURR_FILE = os.path.split(__file__)
@@ -37,6 +38,9 @@ logger = logging.getLogger("my_logger")
 ##################################################
 # Main
 ##################################################
+if __name__ == "__main__":
+    app.run(debug=True)
+
 print("test")
 
 
