@@ -8,3 +8,7 @@ def home():
 @app.route("/proddash")
 def proddash():
     return render_template("proddash.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
