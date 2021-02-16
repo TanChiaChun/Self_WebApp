@@ -1,8 +1,9 @@
 from flask import render_template, url_for, request, redirect, flash
-from selfwebapp import app
-from selfwebapp.models import User
+from selfwebapp import app, db
+from selfwebapp.models import User, Productivity
 from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import blake2b
+from datetime import datetime, timedelta
 
 @app.route("/")
 @login_required
@@ -12,7 +13,16 @@ def home():
 @app.route("/proddash")
 @login_required
 def proddash():
-    return render_template("proddash.html")
+    prods = Productivity.query.all()
+    return render_template("proddash.html", prods=prods)
+
+@app.route("/proddash/update/<int:prod_id>")
+@login_required
+def proddash_update(prod_id):
+    prod = Productivity.query.get_or_404(prod_id)
+    prod.last_check = datetime.utcnow() + timedelta(hours=8)
+    db.session.commit()
+    return redirect(url_for("proddash"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

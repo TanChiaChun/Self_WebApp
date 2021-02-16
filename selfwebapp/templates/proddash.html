@@ -13,14 +13,12 @@
             </tr>
         </thead>
         <tbody>
+            {% for prod in prods %}
             <tr>
-                <td><a href="#">Calendar</a></td>
-                <td>08:19PM (15-02)</td>
+                <td><a href="{{ url_for('proddash_update', prod_id=prod.id) }}">{{ prod.item }}</a></td>
+                <td>{{ prod.last_check.strftime("%H:%M %p (%d/%m)") }}</td>
             </tr>
-            <tr>
-                <td><a href="#">To Do</a></td>
-                <td>08:19PM (15-02)</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 </div>
