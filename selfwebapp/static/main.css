@@ -15,6 +15,11 @@ h1.my_h1 {
     font-size: xx-large;
 }
 
+.my_alert {
+    margin-bottom: 0;
+    margin-top: 0.5rem;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #171717;
