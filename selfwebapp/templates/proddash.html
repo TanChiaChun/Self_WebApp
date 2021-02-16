@@ -1,0 +1,27 @@
+{% extends "_template.html" %}
+{% block nav_active_proddash %}active{% endblock nav_active_proddash %}
+
+{% block main_body %}
+<div class="container my_padding_top">
+    <h1 class="my_h1">Productivity Dashboard</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Items</th>
+                <th scope="col">Last Checked</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="#">Calendar</a></td>
+                <td>08:19PM (15-02)</td>
+            </tr>
+            <tr>
+                <td><a href="#">To Do</a></td>
+                <td>08:19PM (15-02)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock main_body %}

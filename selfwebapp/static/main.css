@@ -1,0 +1,35 @@
+.bg-light {
+    background-color: white !important;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.nav-link.active {
+    text-decoration: underline 1.5px;
+}
+
+.my_padding_top {
+    padding-top: 1rem;
+}
+
+h1.my_h1 {
+    font-size: xx-large;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #171717;
+        color: #E3E3E5;
+    }
+
+    .bg-light {
+        background-color: #171717 !important;
+    }
+
+    .my_navtext_color {
+        color: #E3E3E5 !important;
+    }
+
+    .table {
+        color: #E3E3E5;
+    }
+}
