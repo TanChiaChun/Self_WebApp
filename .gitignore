@@ -5,3 +5,4 @@ pyinstaller/
 requirements_*.txt
 *.log
 data/
+*.db
