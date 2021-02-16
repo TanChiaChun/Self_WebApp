@@ -2,6 +2,7 @@ from flask import render_template, url_for, request, redirect, flash
 from selfwebapp import app
 from selfwebapp.models import User
 from flask_login import login_user, current_user, logout_user, login_required
+from hashlib import blake2b
 
 @app.route("/")
 @login_required
@@ -19,9 +20,9 @@ def login():
         return redirect(url_for("home"))
     if request.method == "POST":
         username = request.form.get("inputUsername")
-        password = request.form.get("inputPassword")
+        password = bytes(request.form.get("inputPassword"), "utf-8")
         user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
+        if user and blake2b(password, digest_size=20).hexdigest() == user.password:
             login_user(user)
             flash("Login successful", category="success")
             return redirect(url_for("home"))

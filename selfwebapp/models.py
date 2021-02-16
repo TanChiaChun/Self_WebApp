@@ -1,5 +1,6 @@
 from selfwebapp import db, login_manager
 from flask_login import UserMixin
+from hashlib import blake2b
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -15,6 +16,6 @@ class User(db.Model, UserMixin):
 
 def init_db():
     db.create_all()
-    user1 = User(username="hydrochun", password="password")
+    user1 = User(username="user1", password=blake2b(bytes("password1", "utf-8"), digest_size=20).hexdigest())
     db.session.add(user1)
     db.session.commit()
