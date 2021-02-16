@@ -22,6 +22,7 @@ def proddash_update(prod_id):
     prod = Productivity.query.get_or_404(prod_id)
     prod.last_check = datetime.utcnow() + timedelta(hours=8)
     db.session.commit()
+    flash(f"Updated {prod.item}", category="success")
     return redirect(url_for("proddash"))
 
 @app.route("/login", methods=["GET", "POST"])
@@ -44,4 +45,5 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash("Logout successful", category="success")
     return redirect(url_for("login"))
