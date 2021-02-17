@@ -10,6 +10,7 @@
             <tr>
                 <th scope="col">Items</th>
                 <th scope="col">Last Checked</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -17,6 +18,7 @@
             <tr>
                 <td><a href="{{ url_for('proddash_update', prod_id=prod.id) }}">{{ prod.item }}</a></td>
                 <td>{{ prod.last_check.strftime("%H:%M %p (%d/%m)") }}</td>
+                <td><a href="{{ url_for('proddash_undo', prod_id=prod.id) }}">Undo</a></td>
             </tr>
             {% endfor %}
         </tbody>

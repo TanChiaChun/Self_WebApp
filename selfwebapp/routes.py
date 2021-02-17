@@ -20,9 +20,19 @@ def proddash():
 @login_required
 def proddash_update(prod_id):
     prod = Productivity.query.get_or_404(prod_id)
+    prod.last_check_previous = prod.last_check
     prod.last_check = datetime.utcnow() + timedelta(hours=8)
     db.session.commit()
     flash(f"Updated {prod.item}", category="success")
+    return redirect(url_for("proddash"))
+
+@app.route("/proddash/undo/<int:prod_id>")
+@login_required
+def proddash_undo(prod_id):
+    prod = Productivity.query.get_or_404(prod_id)
+    prod.last_check = prod.last_check_previous
+    db.session.commit()
+    flash(f"Undo {prod.item}", category="success")
     return redirect(url_for("proddash"))
 
 @app.route("/login", methods=["GET", "POST"])
