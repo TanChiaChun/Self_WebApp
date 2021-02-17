@@ -24,10 +24,10 @@ class Productivity(db.Model):
     def __repr__(self):
         return f"Productivity({self.item}: {self.last_check})"
 
-def init_db():
+def init_db(my_username, my_password):
     db.create_all()
-    # user1 = User(username="user1", password=blake2b(bytes("password1", "utf-8"), digest_size=20).hexdigest())
-    # db.session.add(user1)
+    user1 = User(username=my_username, password=blake2b(bytes(my_password, "utf-8"), digest_size=20).hexdigest())
+    db.session.add(user1)
     prod1 = Productivity(item="Calendar", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow())
     prod2 = Productivity(item="To Do", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow())
     prod3 = Productivity(item="CNET Tech Today", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow())
