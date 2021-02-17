@@ -1,9 +1,9 @@
 from flask import render_template, url_for, request, redirect, flash
-from selfwebapp import app, db
-from selfwebapp.models import User, Productivity
 from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import blake2b
 from datetime import datetime, timedelta
+from selfwebapp import app, db
+from selfwebapp.models import User, Productivity
 
 @app.route("/")
 @login_required

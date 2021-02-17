@@ -1,7 +1,7 @@
-from selfwebapp import db, login_manager
 from flask_login import UserMixin
 from hashlib import blake2b
 from datetime import datetime
+from selfwebapp import db, login_manager
 
 @login_manager.user_loader
 def load_user(user_id):
