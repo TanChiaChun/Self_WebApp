@@ -6,4 +6,5 @@ requirements_*.txt
 *.log
 data/
 *.db
+*.ini
 *.env
