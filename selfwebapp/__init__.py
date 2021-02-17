@@ -11,4 +11,8 @@ login_manager = LoginManager(app)
 login_manager.login_view = "login"
 login_manager.login_message_category = "danger"
 
+from selfwebapp.models import init_db
+if not os.path.exists("selfwebapp/site.db"):
+    init_db()
+
 from selfwebapp import routes
