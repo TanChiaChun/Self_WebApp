@@ -22,10 +22,18 @@ h1.my_h1 {
     padding-bottom: 0.5rem;
 }
 
+a {
+    text-decoration: none;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #171717;
         color: #E3E3E5;
+    }
+
+    a {
+        color: #4EB4FF;
     }
 
     .bg-light {
