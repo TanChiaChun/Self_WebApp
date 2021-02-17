@@ -44,7 +44,7 @@ def login():
         password = bytes(request.form.get("inputPassword"), "utf-8")
         user = User.query.filter_by(username=username).first()
         if user and blake2b(password, digest_size=20).hexdigest() == user.password:
-            login_user(user)
+            login_user(user, remember=True, duration=timedelta(weeks=2))
             flash("Login successful", category="success")
             return redirect(url_for("home"))
         else:
