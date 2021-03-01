@@ -14,7 +14,8 @@ def home():
 @login_required
 def proddash():
     prods = Productivity.query.all()
-    return render_template("proddash.html", prods=prods)
+    curr_datetime = datetime.utcnow() + timedelta(hours=8)
+    return render_template("proddash.html", prods=prods, curr_datetime=curr_datetime)
 
 @app.route("/proddash/update/<int:prod_id>")
 @login_required
