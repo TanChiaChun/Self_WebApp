@@ -14,11 +14,21 @@
             </tr>
         </thead>
         <tbody>
+            {% set prev_cat = [""] %}
             {% for prod in prods %}
+            {% if prod.category != prev_cat[-1] %}
+            <tr>
+                <td colspan="3" style="border: none;"></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="font-weight: bold;">{{ prod.category }}</td>
+            </tr>
+            {% endif %}
             <tr>
                 <td><a href="{{ url_for('proddash_update', prod_id=prod.id) }}">{{ prod.item }}</a></td>
                 <td{% if prod.last_check.date() < curr_datetime.date() %} style="color: red;"{% endif %}>{{ prod.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
                 <td><a href="{{ url_for('proddash_undo', prod_id=prod.id) }}">Undo</a></td>
+                {% if prev_cat.append(prod.category) %}{% endif %}
             </tr>
             {% endfor %}
         </tbody>
