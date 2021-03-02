@@ -10,31 +10,31 @@ from selfwebapp.models import User, Productivity
 def home():
     return render_template("home.html")
 
-@app.route("/proddash")
+@app.route("/hour")
 @login_required
-def proddash():
+def hour():
     prods = Productivity.query.all()
     curr_datetime = datetime.utcnow() + timedelta(hours=8)
-    return render_template("proddash.html", prods=prods, curr_datetime=curr_datetime)
+    return render_template("hour.html", prods=prods, curr_datetime=curr_datetime)
 
-@app.route("/proddash/update/<int:prod_id>")
+@app.route("/hour/update/<int:prod_id>")
 @login_required
-def proddash_update(prod_id):
+def hour_update(prod_id):
     prod = Productivity.query.get_or_404(prod_id)
     prod.last_check_previous = prod.last_check
     prod.last_check = datetime.utcnow() + timedelta(hours=8)
     db.session.commit()
     flash(f"Updated {prod.item}", category="success")
-    return redirect(url_for("proddash"))
+    return redirect(url_for("hour"))
 
-@app.route("/proddash/undo/<int:prod_id>")
+@app.route("/hour/undo/<int:prod_id>")
 @login_required
-def proddash_undo(prod_id):
+def hour_undo(prod_id):
     prod = Productivity.query.get_or_404(prod_id)
     prod.last_check = prod.last_check_previous
     db.session.commit()
     flash(f"Undo {prod.item}", category="success")
-    return redirect(url_for("proddash"))
+    return redirect(url_for("hour"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

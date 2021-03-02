@@ -3,7 +3,7 @@
 
 {% block main_body %}
 <div class="container my_padding_top">
-    <h1 class="my_h1">Productivity Dashboard</h1>
+    <h1 class="my_h1">Hours</h1>
 
     <table class="table">
         <thead>
@@ -25,9 +25,9 @@
             </tr>
             {% endif %}
             <tr>
-                <td><a href="{{ url_for('proddash_update', prod_id=prod.id) }}">{{ prod.item }}</a></td>
+                <td><a href="{{ url_for('hour_update', prod_id=prod.id) }}">{{ prod.item }}</a></td>
                 <td{% if prod.last_check.date() < curr_datetime.date() %} style="color: red;"{% endif %}>{{ prod.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
-                <td><a href="{{ url_for('proddash_undo', prod_id=prod.id) }}">Undo</a></td>
+                <td><a href="{{ url_for('hour_undo', prod_id=prod.id) }}">Undo</a></td>
                 {% if prev_cat.append(prod.category) %}{% endif %}
             </tr>
             {% endfor %}
