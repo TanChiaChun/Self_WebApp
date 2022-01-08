@@ -12,18 +12,12 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
 
-    def __repr__(self):
-        return f"User({self.username})"
-
 class Productivity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item = db.Column(db.String(80), unique=True, nullable=False)
     last_check = db.Column(db.DateTime, nullable=False)
     last_check_previous = db.Column(db.DateTime, nullable=False)
     category = db.Column(db.String(80), nullable=False)
-
-    def __repr__(self):
-        return f"Productivity({self.item}: {self.last_check})"
 
 def init_db(my_username, my_password):
     db.create_all()
