@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
 
-class Productivity(db.Model):
+class Key(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item = db.Column(db.String(80), unique=True, nullable=False)
     last_check = db.Column(db.DateTime, nullable=False)
@@ -30,16 +30,16 @@ def init_db(my_username, my_password, csv_path):
     user1 = User(username=my_username, password=blake2b(bytes(my_password, "utf-8"), digest_size=20).hexdigest())
     db.session.add(user1)
 
-    # Read Productivity from CSV
-    productivity = []
+    # Read Keys from CSV
+    keys = []
     with open(csv_path) as csvfile:
         reader = csv.reader(csvfile)
         next(reader)
         for row in reader:
-            productivity.append(row)
+            keys.append(row)
     
-    # Init Productivity
-    for p in productivity:
-        db.session.add(Productivity(item=p[1], last_check=get_dt(p[2]), last_check_previous=get_dt(p[3]), category=p[4]))
+    # Init Keys
+    for p in keys:
+        db.session.add(Key(item=p[1], last_check=get_dt(p[2]), last_check_previous=get_dt(p[3]), category=p[4]))
     
     db.session.commit()

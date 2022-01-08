@@ -1,0 +1,37 @@
+{% extends "_template.html" %}
+{% block nav_active_key %}active{% endblock nav_active_key %}
+
+{% block main_body %}
+<div class="container my_padding_top">
+    <h1 class="my_h1">Key</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Items</th>
+                <th scope="col">Last Checked</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set prev_cat = [""] %}
+            {% for key in keys %}
+            {% if key.category != prev_cat[-1] %}
+            <tr>
+                <td colspan="3" style="border: none;"></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="font-weight: bold;">{{ key.category }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td><a href="{{ url_for('key_update', key_id=key.id) }}">{{ key.item }}</a></td>
+                <td{% if key.last_check.date() < curr_datetime.date() %} style="color: red;"{% endif %}>{{ key.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
+                <td><a href="{{ url_for('key_undo', key_id=key.id) }}">Undo</a></td>
+                {% if prev_cat.append(key.category) %}{% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock main_body %}

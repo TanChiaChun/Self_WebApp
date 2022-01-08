@@ -3,38 +3,38 @@ from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import blake2b
 from datetime import datetime, timedelta
 from selfwebapp import app, db
-from selfwebapp.models import User, Productivity
+from selfwebapp.models import User, Key
 
 @app.route("/")
 @login_required
 def home():
     return render_template("home.html")
 
-@app.route("/hour")
+@app.route("/key")
 @login_required
-def hour():
-    prods = Productivity.query.all()
+def key():
+    keys = Key.query.all()
     curr_datetime = datetime.utcnow() + timedelta(hours=8)
-    return render_template("hour.html", prods=prods, curr_datetime=curr_datetime)
+    return render_template("key.html", keys=keys, curr_datetime=curr_datetime)
 
-@app.route("/hour/update/<int:prod_id>")
+@app.route("/key/update/<int:key_id>")
 @login_required
-def hour_update(prod_id):
-    prod = Productivity.query.get_or_404(prod_id)
-    prod.last_check_previous = prod.last_check
-    prod.last_check = datetime.utcnow() + timedelta(hours=8)
+def key_update(key_id):
+    key = Key.query.get_or_404(key_id)
+    key.last_check_previous = key.last_check
+    key.last_check = datetime.utcnow() + timedelta(hours=8)
     db.session.commit()
-    flash(f"Updated {prod.item}", category="success")
-    return redirect(url_for("hour"))
+    flash(f"Updated {key.item}", category="success")
+    return redirect(url_for("key"))
 
-@app.route("/hour/undo/<int:prod_id>")
+@app.route("/key/undo/<int:key_id>")
 @login_required
-def hour_undo(prod_id):
-    prod = Productivity.query.get_or_404(prod_id)
-    prod.last_check = prod.last_check_previous
+def key_undo(key_id):
+    key = Key.query.get_or_404(key_id)
+    key.last_check = key.last_check_previous
     db.session.commit()
-    flash(f"Undo {prod.item}", category="success")
-    return redirect(url_for("hour"))
+    flash(f"Undo {key.item}", category="success")
+    return redirect(url_for("key"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
