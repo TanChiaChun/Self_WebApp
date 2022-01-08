@@ -68,12 +68,14 @@ def finalise_app(log_message=""):
 ##################################################
 initialise_app()
 
+# Read from DB
 con = sqlite3.connect("data/site.db")
 cur = con.cursor()
 for row in cur.execute("SELECT * FROM Productivity"):
     productivity.append(row)
 con.close()
 
+# Write to CSV
 with open("data/Productivity.csv", 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(["id", "item", "last_check", "last_check_previous", "category"])
