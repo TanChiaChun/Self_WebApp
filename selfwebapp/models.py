@@ -23,7 +23,7 @@ class Productivity(db.Model):
 def get_dt(s):
     return datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f")
 
-def init_db(my_username, my_password):
+def init_db(my_username, my_password, csv_path):
     db.create_all()
 
     # Init user
@@ -32,7 +32,7 @@ def init_db(my_username, my_password):
 
     # Read Productivity from CSV
     productivity = []
-    with open("data/Productivity.csv") as csvfile:
+    with open(csv_path) as csvfile:
         reader = csv.reader(csvfile)
         next(reader)
         for row in reader:
