@@ -3,6 +3,7 @@ import os
 import argparse
 import logging
 from sys import stdout, exit
+import sqlite3
 
 # Initialise project
 CURR_DIR, CURR_FILE = os.path.split(__file__)
@@ -23,6 +24,7 @@ args = my_arg_parser.parse_args()
 # Variables
 ##################################################
 LOG_END = "\n-------------------------"
+productivity = []
 
 ##################################################
 # Functions
@@ -64,5 +66,10 @@ def finalise_app(log_message=""):
 # Main
 ##################################################
 initialise_app()
+
+con = sqlite3.connect("data/site.db")
+cur = con.cursor()
+for row in cur.execute("SELECT * FROM Productivity"):
+    productivity.append(row)
 
 finalise_app()
