@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 from hashlib import blake2b
+import csv
 from datetime import datetime
 from selfwebapp import db, login_manager
 
@@ -19,8 +20,19 @@ class Productivity(db.Model):
     last_check_previous = db.Column(db.DateTime, nullable=False)
     category = db.Column(db.String(80), nullable=False)
 
+def get_dt(s):
+    return datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f")
+
 def init_db(my_username, my_password):
     db.create_all()
     user1 = User(username=my_username, password=blake2b(bytes(my_password, "utf-8"), digest_size=20).hexdigest())
     db.session.add(user1)
+    productivity = []
+    with open("data/Productivity.csv") as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)
+        for row in reader:
+            productivity.append(row)
+    for p in productivity:
+        db.session.add(Productivity(item=p[1], last_check=get_dt(p[2]), last_check_previous=get_dt(p[3]), category=p[4]))
     db.session.commit()

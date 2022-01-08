@@ -13,6 +13,6 @@ login_manager.login_message_category = "danger"
 
 # from selfwebapp.models import init_db
 # if not os.path.exists("selfwebapp/site.db"):
-#     init_db()
+#     init_db("admin", "password")
 
 from selfwebapp import routes
