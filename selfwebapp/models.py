@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 from hashlib import blake2b
+import csv
 from datetime import datetime
 from selfwebapp import db, login_manager
 
@@ -19,32 +20,26 @@ class Productivity(db.Model):
     last_check_previous = db.Column(db.DateTime, nullable=False)
     category = db.Column(db.String(80), nullable=False)
 
-def init_db(my_username, my_password):
+def get_dt(s):
+    return datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f")
+
+def init_db(my_username, my_password, csv_path):
     db.create_all()
+
+    # Init user
     user1 = User(username=my_username, password=blake2b(bytes(my_password, "utf-8"), digest_size=20).hexdigest())
     db.session.add(user1)
-    prod1 = Productivity(item="Calendar", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Key")
-    prod2 = Productivity(item="To Do", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Key")
-    prod3 = Productivity(item="WhatsApp", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Messaging")
-    prod4 = Productivity(item="Telegram", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Messaging")
-    prod5 = Productivity(item="Messenger", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Messaging")
-    prod6 = Productivity(item="Teams", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Messaging")
-    prod7 = Productivity(item="Telegram - Photos", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Photos")
-    prod8 = Productivity(item="Photos", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Photos")
-    prod9 = Productivity(item="Photos - My Albums", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Photos")
-    prod10 = Productivity(item="Photos - Shared Albums", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="Photos")
-    prod11 = Productivity(item="Emails", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="News")
-    prod12 = Productivity(item="CNET Tech Today", last_check=datetime.utcnow(), last_check_previous=datetime.utcnow(), category="News")
-    db.session.add(prod1)
-    db.session.add(prod2)
-    db.session.add(prod3)
-    db.session.add(prod4)
-    db.session.add(prod5)
-    db.session.add(prod6)
-    db.session.add(prod7)
-    db.session.add(prod8)
-    db.session.add(prod9)
-    db.session.add(prod10)
-    db.session.add(prod11)
-    db.session.add(prod12)
+
+    # Read Productivity from CSV
+    productivity = []
+    with open(csv_path) as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)
+        for row in reader:
+            productivity.append(row)
+    
+    # Init Productivity
+    for p in productivity:
+        db.session.add(Productivity(item=p[1], last_check=get_dt(p[2]), last_check_previous=get_dt(p[3]), category=p[4]))
+    
     db.session.commit()
