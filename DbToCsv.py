@@ -4,6 +4,7 @@ import argparse
 import logging
 from sys import stdout, exit
 import sqlite3
+import csv
 
 # Initialise project
 CURR_DIR, CURR_FILE = os.path.split(__file__)
@@ -72,5 +73,10 @@ cur = con.cursor()
 for row in cur.execute("SELECT * FROM Productivity"):
     productivity.append(row)
 con.close()
+
+with open("data/Productivity.csv", 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(["id", "item", "last_check", "last_check_previous", "category"])
+    writer.writerows(productivity)
 
 finalise_app()
