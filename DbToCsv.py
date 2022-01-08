@@ -71,5 +71,6 @@ con = sqlite3.connect("data/site.db")
 cur = con.cursor()
 for row in cur.execute("SELECT * FROM Productivity"):
     productivity.append(row)
+con.close()
 
 finalise_app()
