@@ -13,7 +13,8 @@ logger = logging.getLogger("my_logger")
 
 # Get command line arguments
 my_arg_parser = argparse.ArgumentParser(description=f"{PROJ_NAME}")
-#my_arg_parser.add_argument("arg1", help="Text1")
+my_arg_parser.add_argument("input", help="File path of SQLite DB")
+my_arg_parser.add_argument("output", help="File path of CSV output")
 my_arg_parser.add_argument("--log", help="DEBUG to enter debug mode")
 args = my_arg_parser.parse_args()
 
@@ -69,16 +70,18 @@ def finalise_app(log_message=""):
 initialise_app()
 
 # Read from DB
-con = sqlite3.connect("data/site.db")
+con = sqlite3.connect(args.input)
 cur = con.cursor()
 for row in cur.execute("SELECT * FROM Productivity"):
     productivity.append(row)
 con.close()
+logger.info(f"Complete reading from {args.input}")
 
 # Write to CSV
-with open("data/Productivity.csv", 'w', newline='') as csvfile:
+with open(args.output, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
     writer.writerow(["id", "item", "last_check", "last_check_previous", "category"])
     writer.writerows(productivity)
+logger.info(f"Output to {args.output}")
 
 finalise_app()
