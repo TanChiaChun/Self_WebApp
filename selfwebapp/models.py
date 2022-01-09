@@ -13,6 +13,11 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
 
+class Status(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    frequency = db.Column(db.String(80), unique=True, nullable=False)
+    last_done = db.Column(db.DateTime, nullable=False)
+
 class Productivity(object):
     id = db.Column(db.Integer, primary_key=True)
     item = db.Column(db.String(80), unique=True, nullable=False)
@@ -33,23 +38,24 @@ def init_db(my_username, my_password, csv_paths):
     db.create_all()
 
     # Init user
-    user1 = User(username=my_username, password=blake2b(bytes(my_password, "utf-8"), digest_size=20).hexdigest())
-    db.session.add(user1)
+    db.session.add(User(username=my_username, password=blake2b(bytes(my_password, "utf-8"), digest_size=20).hexdigest()))
 
     for csv_path in csv_paths:
         # Read from CSV
-        productivities = []
+        items = []
         with open(csv_path) as csvfile:
             reader = csv.reader(csvfile)
             next(reader)
             for row in reader:
-                productivities.append(row)
+                items.append(row)
         
-        # Init Productivities
-        for p in productivities:
+        # Init DB
+        for i in items:
             if "Key" in csv_path:
-                db.session.add(Key(item=p[1], last_check=get_dt(p[2]), last_check_previous=get_dt(p[3]), category=p[4]))
+                db.session.add(Key(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
             elif "Loop" in csv_path:
-                db.session.add(Loop(item=p[1], last_check=get_dt(p[2]), last_check_previous=get_dt(p[3]), category=p[4]))
+                db.session.add(Loop(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
+            elif "Status" in csv_path:
+                db.session.add(Status(frequency=i[1], last_done=get_dt(i[2])))
     
     db.session.commit()
