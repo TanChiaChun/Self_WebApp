@@ -23,7 +23,7 @@
                 <td><a href="{{ url_for('status_undo', s_id=status.id) }}">Undo</a></td>
                 <td>
                     <form method="POST">
-                        <input type="date" required name="defer_date" value="{{ status.defer_to.strftime('%Y-%m-%d') }}">
+                        <input type="date" required name="defer_date" {% if status.defer_to.date() >= curr_dt.date() %}value="{{ status.defer_to.strftime('%Y-%m-%d') }}"{% endif %}>
                         <button type="submit" class="btn btn-primary" name="form_id" value="{{ status.id }}">Defer</button>
                     </form>
                 </td>
