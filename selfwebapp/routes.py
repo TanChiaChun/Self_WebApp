@@ -8,7 +8,7 @@ from selfwebapp.models import User, Key, Loop, Social, Day, Status
 def get_curr_dt():
     return datetime.utcnow() + timedelta(hours=8)
 
-def get_status_diff(frequency):
+def get_status_colour(frequency):
     rag_limits = {
         "Day": (1, 2),
         "Week": (7, 14),
@@ -16,7 +16,7 @@ def get_status_diff(frequency):
     }
     d = Status.query.filter_by(frequency=frequency).first().last_done.date()
     d_defer = Status.query.filter_by(frequency=frequency).first().defer_to.date()
-    diff = (date.today() - d).days
+    diff = (get_curr_dt().date() - d).days
     if (diff < rag_limits[frequency][0]):
         return ("#7BB87B", "black")
     elif d_defer > get_curr_dt().date():
@@ -25,7 +25,31 @@ def get_status_diff(frequency):
         return ("#FFCC33", "black")
     else:
         return ("#D2222D", "white")
-app.jinja_env.globals["get_status_diff"] = get_status_diff
+app.jinja_env.globals["get_status_colour"] = get_status_colour
+
+def get_item_colour(frequency, dt):
+    rag_limits = {
+        "Day": (1, 2)
+    }
+    if (frequency == "Key" or frequency == "Loop" or frequency == "Social"):
+        if dt.date() < get_curr_dt().date():
+            return ("#D2222D", "white")
+        hour_diff = (get_curr_dt() - dt).total_seconds() / 3600
+        if hour_diff < 1:
+            return ("#BDDBBD", "black")
+        elif hour_diff < 2:
+            return ("#7BB87B", "black")
+        else:
+            return ("#FFCC33", "black")
+    else:
+        diff = (get_curr_dt().date() - dt.date()).days
+        if (diff < rag_limits[frequency][0]):
+            return ("#7BB87B", "black")
+        elif (diff < rag_limits[frequency][1]):
+            return ("#FFCC33", "black")
+        else:
+            return ("#D2222D", "white")
+app.jinja_env.globals["get_item_colour"] = get_item_colour
 
 @app.route("/")
 @login_required
