@@ -26,7 +26,6 @@ args = my_arg_parser.parse_args()
 # Variables
 ##################################################
 LOG_END = "\n-------------------------"
-productivity = []
 
 ##################################################
 # Functions
@@ -76,6 +75,7 @@ logger.info(f"Connected to {args.inFile}")
 
 queries = ["SELECT * FROM Key", "SELECT * FROM Loop"]
 for query in queries:
+    productivity = []
     table = query.split(' ')[-1]
     # Read from DB
     for row in cur.execute(query):
