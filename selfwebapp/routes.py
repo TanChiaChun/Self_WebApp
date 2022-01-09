@@ -5,6 +5,9 @@ from datetime import date, datetime, timedelta
 from selfwebapp import app, db
 from selfwebapp.models import User, Key, Loop, Status
 
+def get_curr_dt():
+    return datetime.utcnow() + timedelta(hours=8)
+
 def get_status_diff(frequency):
     rag_limits = {
         "Day": (1, 2),
@@ -12,17 +15,17 @@ def get_status_diff(frequency):
         "Month": (28, 56)
     }
     d = Status.query.filter_by(frequency=frequency).first().last_done.date()
+    d_defer = Status.query.filter_by(frequency=frequency).first().defer_to.date()
     diff = (date.today() - d).days
     if (diff < rag_limits[frequency][0]):
         return ("#7BB87B", "black")
+    elif d_defer > get_curr_dt().date():
+        return ("#999999", "black")
     elif (diff < rag_limits[frequency][1]):
         return ("#FFCC33", "black")
     else:
         return ("#D2222D", "white")
 app.jinja_env.globals["get_status_diff"] = get_status_diff
-
-def get_curr_dt():
-    return datetime.utcnow() + timedelta(hours=8)
 
 @app.route("/")
 @login_required
