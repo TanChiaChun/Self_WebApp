@@ -30,6 +30,16 @@ def status():
     statuses = Status.query.all()
     return render_template("status.html", statuses=statuses)
 
+@app.route("/status/update/<int:s_id>")
+@login_required
+def status_update(s_id):
+    status = Status.query.get_or_404(s_id)
+    status.last_done_previous = status.last_done
+    status.last_done = datetime.utcnow() + timedelta(hours=8)
+    db.session.commit()
+    flash(f"Updated {status.frequency}", category="success")
+    return redirect(url_for("status"))
+
 @app.route("/productivity/<p>")
 @login_required
 def productivity(p):
