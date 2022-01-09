@@ -17,6 +17,7 @@ class Status(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     frequency = db.Column(db.String(80), unique=True, nullable=False)
     last_done = db.Column(db.DateTime, nullable=False)
+    last_done_previous = db.Column(db.DateTime, nullable=False)
 
 class Productivity(object):
     id = db.Column(db.Integer, primary_key=True)
@@ -56,6 +57,6 @@ def init_db(my_username, my_password, csv_paths):
             elif "Loop" in csv_path:
                 db.session.add(Loop(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
             elif "Status" in csv_path:
-                db.session.add(Status(frequency=i[1], last_done=get_dt(i[2])))
+                db.session.add(Status(frequency=i[1], last_done=get_dt(i[2]), last_done_previous=get_dt(i[3])))
     
     db.session.commit()
