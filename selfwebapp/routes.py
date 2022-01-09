@@ -26,9 +26,15 @@ app.jinja_env.globals["get_status_diff"] = get_status_diff
 def home():
     return render_template("home.html")
 
-@app.route("/status")
+@app.route("/status", methods=["GET", "POST"])
 @login_required
 def status():
+    if request.method == "POST":
+        status = Status.query.get_or_404(request.form["form_id"])
+        status.defer_to = datetime.strptime(request.form["defer_date"], "%Y-%m-%d")
+        db.session.commit()
+        flash(f"Deferred {status.frequency} to {status.defer_to.strftime('%#d %b %y')}", category="success")
+        return redirect(url_for("status"))
     statuses = Status.query.all()
     return render_template("status.html", statuses=statuses)
 
