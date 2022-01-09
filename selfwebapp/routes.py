@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import blake2b
 from datetime import date, datetime, timedelta
 from selfwebapp import app, db
-from selfwebapp.models import User, Key, Loop, Status
+from selfwebapp.models import User, Key, Loop, Social, Status
 
 def get_curr_dt():
     return datetime.utcnow() + timedelta(hours=8)
@@ -70,6 +70,8 @@ def productivity(p):
         productivities = Key.query.all()
     elif p == "loop":
         productivities = Loop.query.all()
+    elif p == "social":
+        productivities = Social.query.all()
     else:
         abort(404)
     return render_template(f"{p}.html", productivities=productivities, curr_dt=get_curr_dt(), p=p)
@@ -81,6 +83,8 @@ def productivity_update(p, p_id):
         productivity = Key.query.get_or_404(p_id)
     elif p == "loop":
         productivity = Loop.query.get_or_404(p_id)
+    elif p == "social":
+        productivity = Social.query.get_or_404(p_id)
     else:
         abort(404)
     productivity.last_check_previous = productivity.last_check
@@ -96,6 +100,8 @@ def productivity_undo(p, p_id):
         productivity = Key.query.get_or_404(p_id)
     elif p == "loop":
         productivity = Loop.query.get_or_404(p_id)
+    elif p == "social":
+        productivity = Social.query.get_or_404(p_id)
     else:
         abort(404)
     productivity.last_check = productivity.last_check_previous

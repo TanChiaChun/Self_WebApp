@@ -42,6 +42,8 @@
             href="{{ url_for('productivity', p='key') }}">Key</a>
           <a class="my_navtext_color nav-link {% block nav_active_loop %}{% endblock %}"
             href="{{ url_for('productivity', p='loop') }}">Loop</a>
+          <a class="my_navtext_color nav-link {% block nav_active_social %}{% endblock %}"
+            href="{{ url_for('productivity', p='social') }}">Social</a>
           <a class="my_navtext_color nav-link" href="{{ url_for('logout') }}">Logout</a>
         </div>
       </div>

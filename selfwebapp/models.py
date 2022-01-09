@@ -33,6 +33,9 @@ class Key(Productivity, db.Model):
 class Loop(Productivity, db.Model):
     pass
 
+class Social(Productivity, db.Model):
+    pass
+
 def get_dt(s):
     return datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f")
 
@@ -56,6 +59,8 @@ def init_db(my_username, my_password, csv_paths):
                 db.session.add(Key(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
             elif "Loop" in csv_path:
                 db.session.add(Loop(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
+            elif "Social" in csv_path:
+                db.session.add(Social(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
             elif "Status" in csv_path:
                 db.session.add(Status(frequency=i[1], last_done=get_dt(i[2]), last_done_previous=get_dt(i[3]), defer_to=get_dt(i[4])))
     
