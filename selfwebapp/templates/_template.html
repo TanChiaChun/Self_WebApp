@@ -47,7 +47,16 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col my_status_box" style="background-color: red;">D</div>
+        {% set day_diff = get_status_diff('day') %}
+        <div class="col my_status_box" 
+        {% if day_diff == 0 %}
+          style="background-color: #7BB87B;"
+        {% elif day_diff == 1 %}
+          style="background-color: #FFCC33;"
+        {% else %}
+          style="background-color: #D2222D; color: white;"
+        {% endif %}
+        >D</div>
       </div>
     </div>
   </nav>
