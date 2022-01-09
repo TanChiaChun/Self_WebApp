@@ -1,9 +1,14 @@
 from flask import render_template, url_for, request, redirect, flash, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import blake2b
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from selfwebapp import app, db
-from selfwebapp.models import User, Key, Loop
+from selfwebapp.models import User, Key, Loop, Status
+
+def get_status_diff(frequency):
+    d = Status.query.filter_by(frequency=frequency).first().last_done.date()
+    return (date.today() - d).days
+app.jinja_env.globals["get_status_diff"] = get_status_diff
 
 @app.route("/")
 @login_required
