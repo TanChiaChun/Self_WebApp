@@ -36,7 +36,7 @@
                 {% elif hour_diff >= 2 %}
                     style="background-color: #FFCC33;"
                 {% endif %}
-                ><a class="my_colour_box" href="{{ url_for('productivity_update', p=p, p_id=productivity.id) }}" {% if is_previous_day %}style="color: white;"{% endif %}>{{ productivity.item }}</a></td>
+                ><a class="my_item_box" href="{{ url_for('productivity_update', p=p, p_id=productivity.id) }}" {% if is_previous_day %}style="color: white;"{% endif %}>{{ productivity.item }}</a></td>
                 <td>{{ productivity.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
                 <td><a href="{{ url_for('productivity_undo', p=p, p_id=productivity.id) }}">Undo</a></td>
                 {% if prev_cat.append(productivity.category) %}{% endif %}
