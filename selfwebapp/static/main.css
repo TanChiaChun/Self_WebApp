@@ -26,6 +26,10 @@ a {
     text-decoration: none;
 }
 
+a.my_colour_box {
+    color: black;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #171717;
