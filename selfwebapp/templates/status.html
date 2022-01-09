@@ -10,6 +10,7 @@
             <tr>
                 <th scope="col">Frequency</th>
                 <th scope="col">Last Done</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -18,6 +19,7 @@
             <tr>
                 <td style="background-color: {{ s_colours[0] }};"><a href="{{ url_for('status_update', s_id=status.id) }}" style="color: {{ s_colours[1] }};">{{ status.frequency.capitalize() }}</a></td>
                 <td>{{ status.last_done.strftime("%#I:%M %p (%#d/%#m)") }}</td>
+                <td><a href="{{ url_for('status_undo', s_id=status.id) }}">Undo</a></td>
             </tr>
             {% endfor %}
         </tbody>

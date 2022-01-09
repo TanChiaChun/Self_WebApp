@@ -40,6 +40,15 @@ def status_update(s_id):
     flash(f"Updated {status.frequency}", category="success")
     return redirect(url_for("status"))
 
+@app.route("/status/undo/<int:s_id>")
+@login_required
+def status_undo(s_id):
+    status = Status.query.get_or_404(s_id)
+    status.last_done = status.last_done_previous
+    db.session.commit()
+    flash(f"Undo {status.frequency}", category="success")
+    return redirect(url_for("status"))
+
 @app.route("/productivity/<p>")
 @login_required
 def productivity(p):
