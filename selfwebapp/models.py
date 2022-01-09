@@ -46,7 +46,6 @@ def init_db(my_username, my_password, csv_paths):
         items = []
         with open(csv_path) as csvfile:
             reader = csv.reader(csvfile)
-            next(reader)
             for row in reader:
                 items.append(row)
         

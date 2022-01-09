@@ -86,7 +86,6 @@ for query in queries:
     output_file = f"{args.outDir}/{table}.csv"
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(["id", "item", "last_check", "last_check_previous", "category"])
         writer.writerows(productivity)
     logger.info(f"Output to {output_file}")
 
