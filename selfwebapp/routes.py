@@ -6,8 +6,17 @@ from selfwebapp import app, db
 from selfwebapp.models import User, Key, Loop, Status
 
 def get_status_diff(frequency):
+    rag_limits = {
+        "day": (1, 2)
+    }
     d = Status.query.filter_by(frequency=frequency).first().last_done.date()
-    return (date.today() - d).days
+    diff = (date.today() - d).days
+    if (diff < rag_limits[frequency][0]):
+        return ("#7BB87B", "black")
+    elif (diff < rag_limits[frequency][1]):
+        return ("#FFCC33", "black")
+    else:
+        return ("#D2222D", "white")
 app.jinja_env.globals["get_status_diff"] = get_status_diff
 
 @app.route("/")
