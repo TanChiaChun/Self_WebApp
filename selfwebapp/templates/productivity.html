@@ -13,6 +13,7 @@
             </tr>
         </thead>
         <tbody>
+            {% block social_tbody_pre %}{% endblock %}
             {% set prev_cat = [""] %}
             {% for productivity in productivities %}
             {% set is_previous_day = productivity.last_check.date() < curr_dt.date() %}
@@ -42,6 +43,7 @@
                 {% if prev_cat.append(productivity.category) %}{% endif %}
             </tr>
             {% endfor %}
+            {% block social_tbody_post %}{% endblock %}
         </tbody>
     </table>
 </div>
