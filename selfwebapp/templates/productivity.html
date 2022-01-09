@@ -1,0 +1,36 @@
+{% extends "_template.html" %}
+
+{% block main_body %}
+<div class="container my_padding_top">
+    <h1 class="my_h1">{{ p.capitalize() }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Items</th>
+                <th scope="col">Last Checked</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set prev_cat = [""] %}
+            {% for productivity in productivities %}
+            {% if productivity.category != prev_cat[-1] %}
+            <tr>
+                <td colspan="3" style="border: none;"></td>
+            </tr>
+            <tr>
+                <td colspan="3" style="font-weight: bold;">{{ productivity.category }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td><a href="{{ url_for('productivity_update', p=p, p_id=productivity.id) }}">{{ productivity.item }}</a></td>
+                <td{% if productivity.last_check.date() < curr_datetime.date() %} style="color: red;"{% endif %}>{{ productivity.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
+                <td><a href="{{ url_for('productivity_undo', p=p, p_id=productivity.id) }}">Undo</a></td>
+                {% if prev_cat.append(productivity.category) %}{% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock main_body %}
