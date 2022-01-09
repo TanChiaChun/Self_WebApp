@@ -34,6 +34,11 @@ div.my_status_box {
     margin: 0 0.5rem;
 }
 
+input.my_date_picker {
+    max-width: 125px;
+    font-size: small;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #171717;

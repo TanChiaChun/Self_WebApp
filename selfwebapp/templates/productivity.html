@@ -9,14 +9,14 @@
             <tr>
                 <th scope="col">Items</th>
                 <th scope="col">Last Checked</th>
-                <th scope="col"></th>
+                <th scope="col">Undo</th>
             </tr>
         </thead>
         <tbody>
             {% set prev_cat = [""] %}
             {% for productivity in productivities %}
-            {% set is_previous_day = productivity.last_check.date() < curr_datetime.date() %}
-            {% set hour_diff = (curr_datetime - productivity.last_check).total_seconds() / 3600 %}
+            {% set is_previous_day = productivity.last_check.date() < curr_dt.date() %}
+            {% set hour_diff = (curr_dt - productivity.last_check).total_seconds() / 3600 %}
             {% if productivity.category != prev_cat[-1] %}
             <tr>
                 <td colspan="3" style="border: none;"></td>
