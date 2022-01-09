@@ -51,6 +51,10 @@
       <div class="row">
         {% set day_colours = get_status_diff('Day') %}
         <div class="col my_status_box" style="background-color: {{ day_colours[0] }}; color: {{ day_colours[1] }};">D</div>
+        {% set week_colours = get_status_diff('Week') %}
+        <div class="col my_status_box" style="background-color: {{ week_colours[0] }}; color: {{ week_colours[1] }};">W</div>
+        {% set month_colours = get_status_diff('Month') %}
+        <div class="col my_status_box" style="background-color: {{ month_colours[0] }}; color: {{ month_colours[1] }};">M</div>
       </div>
     </div>
   </nav>

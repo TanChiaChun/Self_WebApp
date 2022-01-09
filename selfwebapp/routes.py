@@ -7,7 +7,9 @@ from selfwebapp.models import User, Key, Loop, Status
 
 def get_status_diff(frequency):
     rag_limits = {
-        "Day": (1, 2)
+        "Day": (1, 2),
+        "Week": (7, 14),
+        "Month": (28, 56)
     }
     d = Status.query.filter_by(frequency=frequency).first().last_done.date()
     diff = (date.today() - d).days
