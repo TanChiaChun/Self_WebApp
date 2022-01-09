@@ -30,6 +30,10 @@ a.my_colour_box {
     color: black;
 }
 
+div.my_status_box {
+    margin: 0 0.5rem;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #171717;
