@@ -17,7 +17,7 @@
             {% for status in statuses %}
             {% set s_colours = get_status_diff(status.frequency) %}
             <tr>
-                <td style="background-color: {{ s_colours[0] }};"><a href="{{ url_for('status_update', s_id=status.id) }}" style="color: {{ s_colours[1] }};">{{ status.frequency.capitalize() }}</a></td>
+                <td style="background-color: {{ s_colours[0] }};"><a href="{{ url_for('status_update', s_id=status.id) }}" style="color: {{ s_colours[1] }};">{{ status.frequency }}</a></td>
                 <td>{{ status.last_done.strftime("%#I:%M %p (%#d/%#m)") }}</td>
                 <td><a href="{{ url_for('status_undo', s_id=status.id) }}">Undo</a></td>
             </tr>
