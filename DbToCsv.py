@@ -13,8 +13,8 @@ logger = logging.getLogger("my_logger")
 
 # Get command line arguments
 my_arg_parser = argparse.ArgumentParser(description=f"{PROJ_NAME}")
-my_arg_parser.add_argument("input", help="File path of SQLite DB")
-my_arg_parser.add_argument("output", help="File path of CSV output")
+my_arg_parser.add_argument("inFile", help="File path of SQLite DB")
+my_arg_parser.add_argument("outDir", help="Folder path of CSV output")
 my_arg_parser.add_argument("--log", help="DEBUG to enter debug mode")
 args = my_arg_parser.parse_args()
 
@@ -69,19 +69,27 @@ def finalise_app(log_message=""):
 ##################################################
 initialise_app()
 
-# Read from DB
-con = sqlite3.connect(args.input)
+# Connect to DB
+con = sqlite3.connect(args.inFile)
 cur = con.cursor()
-for row in cur.execute("SELECT * FROM Productivity"):
-    productivity.append(row)
-con.close()
-logger.info(f"Complete reading from {args.input}")
+logger.info(f"Connected to {args.inFile}")
 
-# Write to CSV
-with open(args.output, 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(["id", "item", "last_check", "last_check_previous", "category"])
-    writer.writerows(productivity)
-logger.info(f"Output to {args.output}")
+queries = ["SELECT * FROM Key", "SELECT * FROM Loop"]
+for query in queries:
+    table = query.split(' ')[-1]
+    # Read from DB
+    for row in cur.execute(query):
+        productivity.append(row)
+    logger.info(f"Complete reading from {table}")
+
+    # Write to CSV
+    output_file = f"{args.outDir}/{table}.csv"
+    with open(output_file, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["id", "item", "last_check", "last_check_previous", "category"])
+        writer.writerows(productivity)
+    logger.info(f"Output to {output_file}")
+
+con.close()
 
 finalise_app()

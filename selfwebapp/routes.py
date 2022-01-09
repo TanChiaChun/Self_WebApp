@@ -1,40 +1,55 @@
-from flask import render_template, url_for, request, redirect, flash
+from flask import render_template, url_for, request, redirect, flash, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import blake2b
 from datetime import datetime, timedelta
 from selfwebapp import app, db
-from selfwebapp.models import User, Productivity
+from selfwebapp.models import User, Key, Loop
 
 @app.route("/")
 @login_required
 def home():
     return render_template("home.html")
 
-@app.route("/hour")
+@app.route("/productivity/<p>")
 @login_required
-def hour():
-    prods = Productivity.query.all()
+def productivity(p):
     curr_datetime = datetime.utcnow() + timedelta(hours=8)
-    return render_template("hour.html", prods=prods, curr_datetime=curr_datetime)
+    if p == "key":
+        productivities = Key.query.all()
+    elif p == "loop":
+        productivities = Loop.query.all()
+    else:
+        abort(404)
+    return render_template(f"{p}.html", productivities=productivities, curr_datetime=curr_datetime, p=p)
 
-@app.route("/hour/update/<int:prod_id>")
+@app.route("/productivity/<p>/update/<int:p_id>")
 @login_required
-def hour_update(prod_id):
-    prod = Productivity.query.get_or_404(prod_id)
-    prod.last_check_previous = prod.last_check
-    prod.last_check = datetime.utcnow() + timedelta(hours=8)
+def productivity_update(p, p_id):
+    if p == "key":
+        productivity = Key.query.get_or_404(p_id)
+    elif p == "loop":
+        productivity = Loop.query.get_or_404(p_id)
+    else:
+        abort(404)
+    productivity.last_check_previous = productivity.last_check
+    productivity.last_check = datetime.utcnow() + timedelta(hours=8)
     db.session.commit()
-    flash(f"Updated {prod.item}", category="success")
-    return redirect(url_for("hour"))
+    flash(f"Updated {productivity.item}", category="success")
+    return redirect(url_for("productivity", p=p))
 
-@app.route("/hour/undo/<int:prod_id>")
+@app.route("/productivity/<p>/undo/<int:p_id>")
 @login_required
-def hour_undo(prod_id):
-    prod = Productivity.query.get_or_404(prod_id)
-    prod.last_check = prod.last_check_previous
+def productivity_undo(p, p_id):
+    if p == "key":
+        productivity = Key.query.get_or_404(p_id)
+    elif p == "loop":
+        productivity = Loop.query.get_or_404(p_id)
+    else:
+        abort(404)
+    productivity.last_check = productivity.last_check_previous
     db.session.commit()
-    flash(f"Undo {prod.item}", category="success")
-    return redirect(url_for("hour"))
+    flash(f"Undo {productivity.item}", category="success")
+    return redirect(url_for("productivity", p=p))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
