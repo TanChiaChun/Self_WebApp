@@ -24,8 +24,8 @@
             </tr>
             {% endif %}
             <tr>
-                <td><a href="{{ url_for('productivity_update', p=p, p_id=productivity.id) }}">{{ productivity.item }}</a></td>
-                <td{% if productivity.last_check.date() < curr_datetime.date() %} style="color: red;"{% endif %}>{{ productivity.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
+                <td{% if productivity.last_check.date() < curr_datetime.date() %} style="background-color: red;"{% endif %}><a href="{{ url_for('productivity_update', p=p, p_id=productivity.id) }}">{{ productivity.item }}</a></td>
+                <td>{{ productivity.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
                 <td><a href="{{ url_for('productivity_undo', p=p, p_id=productivity.id) }}">Undo</a></td>
                 {% if prev_cat.append(productivity.category) %}{% endif %}
             </tr>
