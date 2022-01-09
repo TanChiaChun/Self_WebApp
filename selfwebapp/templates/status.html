@@ -1,0 +1,25 @@
+{% extends "_template.html" %}
+{% block nav_active_status %}active{% endblock nav_active_status %}
+
+{% block main_body %}
+<div class="container my_padding_top">
+    <h1 class="my_h1">Status</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Frequency</th>
+                <th scope="col">Last Done</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for status in statuses %}
+            <tr>
+                <td>{{ status.frequency.capitalize() }}</td>
+                <td>{{ status.last_done.strftime("%#I:%M %p (%#d/%#m)") }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock main_body %}

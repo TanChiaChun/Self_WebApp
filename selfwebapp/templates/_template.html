@@ -36,6 +36,8 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
+          <a class="my_navtext_color nav-link {% block nav_active_status %}{% endblock %}"
+            href="{{ url_for('status') }}">Status</a>
           <a class="my_navtext_color nav-link {% block nav_active_key %}{% endblock %}"
             href="{{ url_for('productivity', p='key') }}">Key</a>
           <a class="my_navtext_color nav-link {% block nav_active_loop %}{% endblock %}"

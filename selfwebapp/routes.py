@@ -15,6 +15,12 @@ app.jinja_env.globals["get_status_diff"] = get_status_diff
 def home():
     return render_template("home.html")
 
+@app.route("/status")
+@login_required
+def status():
+    statuses = Status.query.all()
+    return render_template("status.html", statuses=statuses)
+
 @app.route("/productivity/<p>")
 @login_required
 def productivity(p):
