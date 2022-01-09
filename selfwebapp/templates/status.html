@@ -14,8 +14,9 @@
         </thead>
         <tbody>
             {% for status in statuses %}
+            {% set s_colours = get_status_diff(status.frequency) %}
             <tr>
-                <td>{{ status.frequency.capitalize() }}</td>
+                <td style="background-color: {{ s_colours[0] }};"><a style="color: {{ s_colours[1] }};">{{ status.frequency.capitalize() }}</a></td>
                 <td>{{ status.last_done.strftime("%#I:%M %p (%#d/%#m)") }}</td>
             </tr>
             {% endfor %}
