@@ -37,7 +37,7 @@ def status_update(s_id):
     status.last_done_previous = status.last_done
     status.last_done = datetime.utcnow() + timedelta(hours=8)
     db.session.commit()
-    flash(f"Updated {status.frequency}", category="success")
+    flash(f"Updated {status.frequency.capitalize()}", category="success")
     return redirect(url_for("status"))
 
 @app.route("/status/undo/<int:s_id>")
@@ -46,7 +46,7 @@ def status_undo(s_id):
     status = Status.query.get_or_404(s_id)
     status.last_done = status.last_done_previous
     db.session.commit()
-    flash(f"Undo {status.frequency}", category="success")
+    flash(f"Undo {status.frequency.capitalize()}", category="success")
     return redirect(url_for("status"))
 
 @app.route("/productivity/<p>")
