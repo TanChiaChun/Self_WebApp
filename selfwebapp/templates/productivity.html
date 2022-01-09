@@ -31,12 +31,12 @@
                     style="background-color: #D2222D;"
                 {% elif hour_diff < 1 %}
                     style="background-color: #BDDBBD;"
-                {% elif hour_diff >= 1 and hour_diff < 2 %}
+                {% elif hour_diff < 2 %}
                     style="background-color: #7BB87B;"
-                {% elif hour_diff >= 2 %}
+                {% else %}
                     style="background-color: #FFCC33;"
                 {% endif %}
-                ><a class="my_colour_box" href="{{ url_for('productivity_update', p=p, p_id=productivity.id) }}" {% if is_previous_day %}style="color: white;"{% endif %}>{{ productivity.item }}</a></td>
+                ><a class="my_item_box" href="{{ url_for('productivity_update', p=p, p_id=productivity.id) }}" {% if is_previous_day %}style="color: white;"{% endif %}>{{ productivity.item }}</a></td>
                 <td>{{ productivity.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
                 <td><a href="{{ url_for('productivity_undo', p=p, p_id=productivity.id) }}">Undo</a></td>
                 {% if prev_cat.append(productivity.category) %}{% endif %}

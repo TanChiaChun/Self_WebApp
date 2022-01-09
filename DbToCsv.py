@@ -26,7 +26,6 @@ args = my_arg_parser.parse_args()
 # Variables
 ##################################################
 LOG_END = "\n-------------------------"
-productivity = []
 
 ##################################################
 # Functions
@@ -74,8 +73,9 @@ con = sqlite3.connect(args.inFile)
 cur = con.cursor()
 logger.info(f"Connected to {args.inFile}")
 
-queries = ["SELECT * FROM Key", "SELECT * FROM Loop"]
+queries = ["SELECT * FROM Key", "SELECT * FROM Loop", "SELECT * FROM Status"]
 for query in queries:
+    productivity = []
     table = query.split(' ')[-1]
     # Read from DB
     for row in cur.execute(query):
@@ -86,7 +86,6 @@ for query in queries:
     output_file = f"{args.outDir}/{table}.csv"
     with open(output_file, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(["id", "item", "last_check", "last_check_previous", "category"])
         writer.writerows(productivity)
     logger.info(f"Output to {output_file}")
 

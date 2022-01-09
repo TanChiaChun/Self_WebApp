@@ -1,14 +1,55 @@
 from flask import render_template, url_for, request, redirect, flash, abort
 from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import blake2b
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from selfwebapp import app, db
-from selfwebapp.models import User, Key, Loop
+from selfwebapp.models import User, Key, Loop, Status
+
+def get_status_diff(frequency):
+    rag_limits = {
+        "Day": (1, 2),
+        "Week": (7, 14),
+        "Month": (28, 56)
+    }
+    d = Status.query.filter_by(frequency=frequency).first().last_done.date()
+    diff = (date.today() - d).days
+    if (diff < rag_limits[frequency][0]):
+        return ("#7BB87B", "black")
+    elif (diff < rag_limits[frequency][1]):
+        return ("#FFCC33", "black")
+    else:
+        return ("#D2222D", "white")
+app.jinja_env.globals["get_status_diff"] = get_status_diff
 
 @app.route("/")
 @login_required
 def home():
     return render_template("home.html")
+
+@app.route("/status")
+@login_required
+def status():
+    statuses = Status.query.all()
+    return render_template("status.html", statuses=statuses)
+
+@app.route("/status/update/<int:s_id>")
+@login_required
+def status_update(s_id):
+    status = Status.query.get_or_404(s_id)
+    status.last_done_previous = status.last_done
+    status.last_done = datetime.utcnow() + timedelta(hours=8)
+    db.session.commit()
+    flash(f"Updated {status.frequency}", category="success")
+    return redirect(url_for("status"))
+
+@app.route("/status/undo/<int:s_id>")
+@login_required
+def status_undo(s_id):
+    status = Status.query.get_or_404(s_id)
+    status.last_done = status.last_done_previous
+    db.session.commit()
+    flash(f"Undo {status.frequency}", category="success")
+    return redirect(url_for("status"))
 
 @app.route("/productivity/<p>")
 @login_required
