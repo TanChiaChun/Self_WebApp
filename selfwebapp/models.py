@@ -39,6 +39,9 @@ class Social(Productivity, db.Model):
 class Day(Productivity, db.Model):
     pass
 
+class Week(Productivity, db.Model):
+    pass
+
 def get_dt(s):
     return datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f")
 
@@ -66,6 +69,8 @@ def init_db(my_username, my_password, csv_paths):
                 db.session.add(Social(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
             elif "Day" in csv_path:
                 db.session.add(Day(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
+            elif "Week" in csv_path:
+                db.session.add(Week(item=i[1], last_check=get_dt(i[2]), last_check_previous=get_dt(i[3]), category=i[4]))
             elif "Status" in csv_path:
                 db.session.add(Status(frequency=i[1], last_done=get_dt(i[2]), last_done_previous=get_dt(i[3]), defer_to=get_dt(i[4])))
     

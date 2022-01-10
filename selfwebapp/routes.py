@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from hashlib import blake2b
 from datetime import date, datetime, timedelta
 from selfwebapp import app, db
-from selfwebapp.models import User, Key, Loop, Social, Day, Status
+from selfwebapp.models import User, Key, Loop, Social, Day, Week, Status
 
 def get_curr_dt():
     return datetime.utcnow() + timedelta(hours=8)
@@ -29,7 +29,8 @@ app.jinja_env.globals["get_status_colour"] = get_status_colour
 
 def get_item_colour(frequency, dt):
     rag_limits = {
-        "Day": (1, 2)
+        "Day": (1, 2),
+        "Week": (7, 14)
     }
     if (frequency == "Key" or frequency == "Loop" or frequency == "Social"):
         if dt.date() < get_curr_dt().date():
@@ -98,6 +99,8 @@ def productivity(p):
         productivities = Social.query.all()
     elif p == "day":
         productivities = Day.query.all()
+    elif p == "week":
+        productivities = Week.query.all()
     else:
         abort(404)
     return render_template(f"{p}.html", productivities=productivities, curr_dt=get_curr_dt(), p=p)
@@ -113,6 +116,8 @@ def productivity_update(p, p_id):
         productivity = Social.query.get_or_404(p_id)
     elif p == "day":
         productivity = Day.query.get_or_404(p_id)
+    elif p == "week":
+        productivity = Week.query.get_or_404(p_id)
     else:
         abort(404)
     productivity.last_check_previous = productivity.last_check
@@ -132,6 +137,8 @@ def productivity_undo(p, p_id):
         productivity = Social.query.get_or_404(p_id)
     elif p == "day":
         productivity = Day.query.get_or_404(p_id)
+    elif p == "week":
+        productivity = Week.query.get_or_404(p_id)
     else:
         abort(404)
     productivity.last_check = productivity.last_check_previous
