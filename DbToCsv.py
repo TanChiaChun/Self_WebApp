@@ -73,7 +73,7 @@ con = sqlite3.connect(args.inFile)
 cur = con.cursor()
 logger.info(f"Connected to {args.inFile}")
 
-queries = ["SELECT * FROM Key", "SELECT * FROM Loop", "SELECT * FROM Social", "SELECT * FROM Day", "SELECT * FROM Week", "SELECT * FROM Week", "SELECT * FROM Status"]
+queries = ["SELECT * FROM Key", "SELECT * FROM Loop", "SELECT * FROM Social", "SELECT * FROM Day", "SELECT * FROM Week", "SELECT * FROM Month", "SELECT * FROM Status"]
 for query in queries:
     productivity = []
     table = query.split(' ')[-1]
