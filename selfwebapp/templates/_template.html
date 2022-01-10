@@ -48,6 +48,8 @@
             href="{{ url_for('productivity', p='day') }}">Day</a>
           <a class="my_navtext_color nav-link {% block nav_active_week %}{% endblock %}"
             href="{{ url_for('productivity', p='week') }}">Week</a>
+          <a class="my_navtext_color nav-link {% block nav_active_month %}{% endblock %}"
+            href="{{ url_for('productivity', p='month') }}">Month</a>
           <a class="my_navtext_color nav-link" href="{{ url_for('logout') }}">Logout</a>
         </div>
       </div>
