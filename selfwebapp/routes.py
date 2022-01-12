@@ -29,11 +29,12 @@ app.jinja_env.globals["get_status_colour"] = get_status_colour
 
 def get_item_colour(frequency, dt):
     rag_limits = {
+        "Social": (1, 2),
         "Day": (1, 2),
         "Week": (7, 14),
         "Month": (28, 56)
     }
-    if (frequency == "Key" or frequency == "Loop" or frequency == "Social"):
+    if (frequency == "Key" or frequency == "Loop"):
         if dt.date() < get_curr_dt().date():
             return ("#D2222D", "white")
         hour_diff = (get_curr_dt() - dt).total_seconds() / 3600
