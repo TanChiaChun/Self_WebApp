@@ -31,8 +31,8 @@ def get_item_colour(frequency, dt):
     rag_limits = {
         "Social": (1, 2),
         "Day": (1, 2),
-        "Week": (7, 14),
-        "Month": (28, 56)
+        "Week": (1, 7, 14),
+        "Month": (1, 28, 56)
     }
     if (frequency == "Key" or frequency == "Loop"):
         if dt.date() < get_curr_dt().date():
@@ -47,8 +47,10 @@ def get_item_colour(frequency, dt):
     else:
         diff = (get_curr_dt().date() - dt.date()).days
         if (diff < rag_limits[frequency][0]):
-            return ("#7BB87B", "black")
+            return ("#BDDBBD", "black")
         elif (diff < rag_limits[frequency][1]):
+            return ("#7BB87B", "black")
+        elif (diff < rag_limits[frequency][2]):
             return ("#FFCC33", "black")
         else:
             return ("#D2222D", "white")
