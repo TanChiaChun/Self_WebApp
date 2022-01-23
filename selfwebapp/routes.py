@@ -29,8 +29,8 @@ app.jinja_env.globals["get_status_colour"] = get_status_colour
 
 def get_item_colour(frequency, dt):
     rag_limits = {
-        "Social": (1, 2),
-        "Day": (1, 2),
+        "Social": (0, 1, 2),
+        "Day": (0, 1, 2),
         "Week": (1, 7, 14),
         "Month": (1, 28, 56)
     }
