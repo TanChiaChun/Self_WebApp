@@ -10,6 +10,7 @@
                 <th scope="col">Items</th>
                 <th scope="col">Last Checked</th>
                 <th scope="col">Undo</th>
+                <th scope="col">Manual</th>
             </tr>
         </thead>
         <tbody>
@@ -19,10 +20,10 @@
             {% set item_colours = get_item_colour(p.capitalize(), productivity.last_check) %}
             {% if productivity.category != prev_cat[-1] %}
             <tr>
-                <td colspan="3" style="border: none;"></td>
+                <td colspan="4" style="border: none;"></td>
             </tr>
             <tr>
-                <td colspan="3" style="font-weight: bold;">{{ productivity.category }}</td>
+                <td colspan="4" style="font-weight: bold;">{{ productivity.category }}</td>
             </tr>
             {% endif %}
             <tr>
@@ -31,6 +32,12 @@
                 </td>
                 <td>{{ productivity.last_check.strftime("%#I:%M %p (%#d/%#m)") }}</td>
                 <td><a href="{{ url_for('productivity_undo', p=p, p_id=productivity.id) }}">Undo</a></td>
+                <td>
+                    <form method="POST">
+                        <input type="date" required class="my_date_picker" name="manual_date">
+                        <button type="submit" class="btn btn-primary" name="form_id" value="{{ productivity.id }}">Update</button>
+                    </form>
+                </td>
                 {% if prev_cat.append(productivity.category) %}{% endif %}
             </tr>
             {% endfor %}
