@@ -92,9 +92,21 @@ def status_undo(s_id):
     flash(f"Undo {status.frequency}", category="success")
     return redirect(url_for("status"))
 
-@app.route("/productivity/<p>")
+@app.route("/productivity/<p>", methods=["GET", "POST"])
 @login_required
 def productivity(p):
+    if request.method == "POST":
+        if p == "week":
+            productivity = Week.query.get_or_404(request.form["form_id"])
+        elif p == "month":
+            productivity = Month.query.get_or_404(request.form["form_id"])
+        else:
+            abort(404)
+        productivity.last_check_previous = productivity.last_check
+        productivity.last_check = datetime.strptime(request.form["manual_date"], "%Y-%m-%d")
+        db.session.commit()
+        flash(f"Manual updated {productivity.item} to {productivity.last_check.strftime('%#d %b %y')}", category="success")
+        return redirect(url_for("productivity", p=p))
     if p == "key":
         productivities = Key.query.all()
     elif p == "loop":
