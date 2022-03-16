@@ -17,10 +17,10 @@ def get_status_colour(frequency):
     d = Status.query.filter_by(frequency=frequency).first().last_done.date()
     d_defer = Status.query.filter_by(frequency=frequency).first().defer_to.date()
     diff = (get_curr_dt().date() - d).days
-    if (diff < rag_limits[frequency][0]):
-        return ("#7BB87B", "black")
-    elif d_defer > get_curr_dt().date():
+    if d_defer >= get_curr_dt().date():
         return ("#999999", "black")
+    elif (diff < rag_limits[frequency][0]):
+        return ("#7BB87B", "black")
     elif (diff < rag_limits[frequency][1]):
         return ("#FFCC33", "black")
     else:
